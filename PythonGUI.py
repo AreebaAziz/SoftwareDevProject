@@ -16,7 +16,35 @@ def onClickLogin(existingUser):
     userInfo.geometry("700x690")
     userInfo.configure(bg=background)
 
+def logInCheck(window,username,password):
+    success=False
+    if(os.path.exists('user_data')==False): #no user_data file
+        message="No local user data found. Create a new user."
+    elif(os.stat('user_data').st_size==0): #empty user data file
+        message="No local user data found. Create a new user."
+    else: #searching user_data
+        file=open('user_data','rb')
+        users=pickle.load(file)
+        print(users)
+        for userId, userData in users.items():
+            if(userData['username']==username):
+                if(userData['password']==password): #login successful
+                    success=True
+        message="Incorrect username or password." #will only get here if username and password not found
+    if(success):
+        onClickLogin(window)
+    else:
+        loingFailed=Tk()
+        loingFailed.title("Login Failed")
+        loingFailed.geometry("400x100")
+        loingFailed.configure(bg=background)
+   
+        messageLbl=Label(loingFailed,text=message,bg=newUserbg)
+        messageLbl.place(x=50,y=25)
 
+        okButton=Button(loingFailed, text="  OK  ", bg=newUserbg, command= lambda:closeTwoWindows(window,loingFailed))
+        okButton.place(x=100,y=60)
+    
 # INITIAL WINDOW WITH LOGIN******************************************************************************************
 def main():
     existingUser=Tk()
@@ -43,7 +71,7 @@ def main():
     password=Entry(existingUser,width=20)
     password.place(x=250,y=250)
 
-    login = Button(existingUser, text="Login", command= lambda: onClickLogin(existingUser))
+    login = Button(existingUser, text="Login", command= lambda: logInCheck(existingUser,username.get(),password.get()))
     login.place(x=315,y=295)
 
     lblQuestion=Label(existingUser, text="Don't have an account?", bg=existingUserbg)
