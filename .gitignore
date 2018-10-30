@@ -1,7 +1,4 @@
 user_data
 .vscode/
+tkinter/__pycache__/
 __pycache__/
-dictionarytesting.py
-exampleGUI.py
-user_data - Copy
-PythonGUIGrid.py

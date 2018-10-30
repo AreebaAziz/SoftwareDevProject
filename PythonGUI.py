@@ -14,7 +14,7 @@ def onClickLogin(existingUser):
     existingUser.destroy()
     programparams=Tk()
     programparams.title("Programmable Paramaters")
-    programparams.geometry("700x690")
+    programparams.geometry("680x690")
     programparams.configure(bg=background)
 
     #param1
@@ -107,6 +107,17 @@ def onClickLogin(existingUser):
 
     param1(), param2(), param3(), param4(), param5(), param6(), param7(), param8()
 
+# CURRENT VALUES BOX*************************************************************************
+    currentbg=Label(programparams,height=20,width=60,bg=programparamsbg,borderwidth=2,relief="ridge")
+    currentbg.place(x=43,y=300)
+
+    currenttitle=Label(programparams, text="Current Values", bg=programparamsbg)
+    currenttitle.place(x=245, y=310)
+    currentparams=Label(programparams, text="\np_pacingState:\n\np_pacingMode:\n\np_hysteresis:\n\np_hysteresisInterval:\n\np_lowrateInterval:\n\np_vPaceAmp:\n\np_vPaceWidth:\n\np_VRP:", justify=LEFT, width=20, bg=programparamsbg)
+    currentparams.place(x=50, y=330)
+
+    idlbl=Label(programparams, text="Device ID: ######## \t\tConnection: GOOD", bg=programparamsbg)
+    idlbl.place(x=235, y=595)
 
 # ********************************************************************************************
 def check1(lbl1entry, programparams, bttn1, param1):
@@ -114,6 +125,8 @@ def check1(lbl1entry, programparams, bttn1, param1):
         lblval = Label(programparams, text=lbl1entry, bg=programparamsbg, width=20)
         lblval.place(x=198, y=40)
         bttn1.destroy()
+        p1 = Label(programparams, text=lbl1entry+" y_pacingState", bg=programparamsbg)
+        p1.place(x=180, y=346)
         bttnchange = Button(programparams, text="Change", width=8, bg=programparamsbg, command= lambda: param1())
         bttnchange.place(x=500, y=41)
 
@@ -122,6 +135,8 @@ def check2(lbl2entry, programparams, bttn2, param2):
         lblval = Label(programparams, text=lbl2entry, bg=programparamsbg, width=20)
         lblval.place(x=198, y=70)
         bttn2.destroy()
+        p2 = Label(programparams, text=lbl2entry+" y_pacingMode", bg=programparamsbg)
+        p2.place(x=182, y=378)
         bttnchange = Button(programparams, text="Change", width=8, bg=programparamsbg, command= lambda: param2())
         bttnchange.place(x=500, y=71)
 
@@ -131,6 +146,8 @@ def check3(lbl3entry, programparams, bttn3, param3):
             lblval = Label(programparams, text=lbl3entry, bg=programparamsbg, width=20)
             lblval.place(x=198, y=100)
             bttn3.destroy()
+            p3= Label(programparams, text=lbl3entry, bg=programparamsbg)
+            p3.place(x=170, y=410)
             bttnchange = Button(programparams, text="Change", width=8, bg=programparamsbg, command= lambda: param3())
             bttnchange.place(x=500, y=101)
         else:
@@ -162,6 +179,8 @@ def check4(lbl4entry, programparams, bttn4, param4):
             lblval = Label(programparams, text=lbl4val, bg=programparamsbg, width=20)
             lblval.place(x=198, y=130)
             bttn4.destroy()
+            p4=Label(programparams, text=lbl4entry+" mSec", bg=programparamsbg,)
+            p4.place(x=210, y=442)
             bttnchange = Button(programparams, text="Change", width=8, bg=programparamsbg, command= lambda: param4())
             bttnchange.place(x=500, y=131)
 
@@ -186,6 +205,8 @@ def check5(lbl5entry, programparams, bttn5, param5):
             lblval = Label(programparams, text=lbl5val, bg=programparamsbg, width=20)
             lblval.place(x=198, y=160)
             bttn5.destroy()
+            p5=Label(programparams, text=lbl5entry+" mSec", bg=programparamsbg)
+            p5.place(x=195, y=474)
             bttnchange = Button(programparams, text="Change", width=8, bg=programparamsbg, command= lambda: param5())
             bttnchange.place(x=500, y=161)
 
@@ -210,6 +231,8 @@ def check6(lbl6entry, programparams, bttn6, param6):
             lblval = Label(programparams, text=lbl6val, bg=programparamsbg, width=20)
             lblval.place(x=198, y=190)
             bttn6.destroy()
+            p6=Label(programparams, text=lbl6entry+" mV", bg=programparamsbg)
+            p6.place(x=175, y=506)
             bttnchange = Button(programparams, text="Change", width=8, bg=programparamsbg, command= lambda: param6())
             bttnchange.place(x=500, y=191)
 
@@ -234,6 +257,8 @@ def check7(lbl7entry, programparams, bttn7, param7):
             lblval = Label(programparams, text=lbl7val, bg=programparamsbg, width=20)
             lblval.place(x=198, y=220)
             bttn7.destroy()
+            p7=Label(programparams, text=lbl7entry+" mSec", bg=programparamsbg)
+            p7.place(x=170, y=538)
             bttnchange = Button(programparams, text="Change", width=8, bg=programparamsbg, command= lambda: param7())
             bttnchange.place(x=500, y=221)
 
@@ -258,6 +283,8 @@ def check8(lbl8entry, programparams, bttn8, param8):
             lblval = Label(programparams, text=lbl8val, bg=programparamsbg, width=20)
             lblval.place(x=198, y=250)
             bttn8.destroy()
+            p8=Label(programparams, text=lbl8entry+" mSec", bg=programparamsbg)
+            p8.place(x=123, y=570)
             bttnchange = Button(programparams, text="Change", width=8, bg=programparamsbg, command= lambda: param8())
             bttnchange.place(x=500, y=251)
         
