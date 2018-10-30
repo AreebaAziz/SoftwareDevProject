@@ -10,12 +10,19 @@ programparamsbg = "#e8ecf2"
 users={} #only run once to create blank dict of users
 
 # WINDOW AFTER LOGGED IN *****************************************************************************************
-def onClickLogin(existingUser):
+def onClickLogin(existingUser, currentUserId):
+    currentUserId = currentUserId
+    print(currentUserId)
     existingUser.destroy()
     programparams=Tk()
     programparams.title("Programmable Paramaters")
     programparams.geometry("680x690")
     programparams.configure(bg=background)
+
+    #load user data
+    file = open("user_data", 'rb')
+    users = pickle.load(file)
+    file.close()
 
     #param1
     def param1():
@@ -25,7 +32,7 @@ def onClickLogin(existingUser):
         lbl1entry.place(x=195, y=38)
         unit1 = Label(programparams, text = "(y_pacingState)", bg=background)
         unit1.place(x=390, y=40)
-        bttn1 = Button(programparams, text="OK", width=8, bg=programparamsbg, command=lambda: check1(lbl1entry.get(), programparams, bttn1, param1))
+        bttn1 = Button(programparams, text="OK", width=8, bg=programparamsbg, command=lambda: check1(currentUserId, lbl1entry.get(), programparams, bttn1, param1))
         bttn1.place(x=500, y=41)
 
     # param2
@@ -119,8 +126,12 @@ def onClickLogin(existingUser):
     idlbl=Label(programparams, text="Device ID: ######## \t\tConnection: GOOD", bg=programparamsbg)
     idlbl.place(x=235, y=595)
 
+    p1 = Label(programparams, text=users[currentUserId]["y_pacingState"]+" y_pacingState", bg=programparamsbg)
+    p1.place(x=180, y=346)
+
 # ********************************************************************************************
-def check1(lbl1entry, programparams, bttn1, param1):
+def check1(currentUserId, lbl1entry, programparams, bttn1, param1):
+    print(currentUserId)
     if(lbl1entry):
         lblval = Label(programparams, text=lbl1entry, bg=programparamsbg, width=20)
         lblval.place(x=198, y=40)
@@ -129,6 +140,21 @@ def check1(lbl1entry, programparams, bttn1, param1):
         p1.place(x=180, y=346)
         bttnchange = Button(programparams, text="Change", width=8, bg=programparamsbg, command= lambda: param1())
         bttnchange.place(x=500, y=41)
+
+        # load original storage of users data
+        file=open('user_data','rb')
+        users=pickle.load(file)
+        file.close()
+        print(users)
+
+        # delete original storage of user data
+        os.remove('user_data')
+
+        # write new user data
+        users[currentUserId]['y_pacingState'] = lbl1entry
+        file = open('user_data', 'wb')
+        pickle.dump(users,file)
+        file.close()
 
 def check2(lbl2entry, programparams, bttn2, param2):
     if(lbl2entry):
@@ -299,14 +325,18 @@ def logInCheck(window,username,password):
     else: #searching user_data
         file=open('user_data','rb')
         users=pickle.load(file)
+        file.close()
         print(users)
         for userId, userData in users.items():
             if(userData['username']==username):
                 if(userData['password']==password): #login successful
                     success=True
+                    currentUserId = userId
+                    print(currentUserId)
+                    break   #exit loop once username and password are found
         message="Incorrect username or password." #will only get here if username and password not found
     if(success):
-        onClickLogin(window)
+        onClickLogin(window, currentUserId)
     else:
         loingFailed=Tk()
         loingFailed.title("Login Failed")
@@ -378,6 +408,7 @@ def onClickCreate(newUser,username,password):
     else:
         file=open('user_data','rb')
         users=pickle.load(file)
+        file.close()
         #print(users)
         i=len(users)
         print(i)
@@ -395,8 +426,6 @@ def onClickCreate(newUser,username,password):
         else:
             message="Something went wrong. User not created."
  
-    file.close()
-
     #writing user data file
     file=open('user_data','wb')
     pickle.dump(users,file)
