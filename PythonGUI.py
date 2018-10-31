@@ -12,7 +12,6 @@ users={} #only run once to create blank dict of users
 # WINDOW AFTER LOGGED IN *****************************************************************************************
 def onClickLogin(existingUser, currentUserId):
     currentUserId = currentUserId
-    print(currentUserId)
     existingUser.destroy()
     programparams=Tk()
     programparams.title("Programmable Paramaters")
@@ -43,7 +42,7 @@ def onClickLogin(existingUser, currentUserId):
         lbl2entry.place(x=195, y=68)
         unit2 = Label(programparams, text = "(y_pacingMode)", bg=background)
         unit2.place(x=390, y=70)
-        bttn2 = Button(programparams, text="OK", width=8, bg=programparamsbg, command=lambda: check2(lbl2entry.get(), programparams, bttn2, param2))
+        bttn2 = Button(programparams, text="OK", width=8, bg=programparamsbg, command=lambda: check2(currentUserId, lbl2entry.get(), programparams, bttn2, param2))
         bttn2.place(x=500, y=71)
 
     # param3
@@ -54,7 +53,7 @@ def onClickLogin(existingUser, currentUserId):
         lbl3entry.place(x=195, y=98)
         unit3 = Label(programparams, text = "(boolean)", bg=background)
         unit3.place(x=390, y=100)
-        bttn3 = Button(programparams, text=" OK ", width=8, bg=programparamsbg, command=lambda: check3(lbl3entry.get(), programparams, bttn3, param3))
+        bttn3 = Button(programparams, text=" OK ", width=8, bg=programparamsbg, command=lambda: check3(currentUserId, lbl3entry.get(), programparams, bttn3, param3))
         bttn3.place(x=500, y=101)
 
     # param4
@@ -65,7 +64,7 @@ def onClickLogin(existingUser, currentUserId):
         lbl4entry.place(x=195, y=128)
         unit4 = Label(programparams, text = "(mSec)", bg=background)
         unit4.place(x=390, y=130)
-        bttn4 = Button(programparams, text=" OK ", width=8, bg=programparamsbg, command=lambda: check4(lbl4entry.get(), programparams, bttn4, param4))
+        bttn4 = Button(programparams, text=" OK ", width=8, bg=programparamsbg, command=lambda: check4(currentUserId, lbl4entry.get(), programparams, bttn4, param4))
         bttn4.place(x=500, y=131)
 
     # param5
@@ -76,7 +75,7 @@ def onClickLogin(existingUser, currentUserId):
         lbl5entry.place(x=195, y=158)
         unit5 = Label(programparams, text = "(mSec)", bg=background)
         unit5.place(x=390, y=160)
-        bttn5 = Button(programparams, text=" OK ", width=8, bg=programparamsbg, command=lambda: check5(lbl5entry.get(), programparams, bttn5, param5))
+        bttn5 = Button(programparams, text=" OK ", width=8, bg=programparamsbg, command=lambda: check5(currentUserId, lbl5entry.get(), programparams, bttn5, param5))
         bttn5.place(x=500, y=161)
 
     # param6
@@ -87,7 +86,7 @@ def onClickLogin(existingUser, currentUserId):
         lbl6entry.place(x=195, y=188)
         unit6 = Label(programparams, text = "(mv)", bg=background)
         unit6.place(x=390, y=190)
-        bttn6 = Button(programparams, text=" OK ", width=8, bg=programparamsbg, command=lambda: check6(lbl6entry.get(), programparams, bttn6, param6))
+        bttn6 = Button(programparams, text=" OK ", width=8, bg=programparamsbg, command=lambda: check6(currentUserId, lbl6entry.get(), programparams, bttn6, param6))
         bttn6.place(x=500, y=191)
 
 # param7
@@ -98,7 +97,7 @@ def onClickLogin(existingUser, currentUserId):
         lbl7entry.place(x=195, y=218)
         unit7 = Label(programparams, text = "(mSec)", bg=background)
         unit7.place(x=390, y=220)
-        bttn7 = Button(programparams, text=" OK ", width=8, bg=programparamsbg, command=lambda: check7(lbl7entry.get(), programparams, bttn7, param7))
+        bttn7 = Button(programparams, text=" OK ", width=8, bg=programparamsbg, command=lambda: check7(currentUserId, lbl7entry.get(), programparams, bttn7, param7))
         bttn7.place(x=500, y=221)
 
 # param8
@@ -109,7 +108,7 @@ def onClickLogin(existingUser, currentUserId):
         lbl8entry.place(x=195, y=248)
         unit8 = Label(programparams, text = "(mSec)", bg=background)
         unit8.place(x=390, y=250)
-        bttn8 = Button(programparams, text=" OK ", width=8, bg=programparamsbg, command=lambda: check8(lbl8entry.get(), programparams, bttn8, param8))
+        bttn8 = Button(programparams, text=" OK ", width=8, bg=programparamsbg, command=lambda: check8(currentUserId, lbl8entry.get(), programparams, bttn8, param8))
         bttn8.place(x=500, y=251)        
 
     param1(), param2(), param3(), param4(), param5(), param6(), param7(), param8()
@@ -126,12 +125,33 @@ def onClickLogin(existingUser, currentUserId):
     idlbl=Label(programparams, text="Device ID: ######## \t\tConnection: GOOD", bg=programparamsbg)
     idlbl.place(x=235, y=595)
 
-    p1 = Label(programparams, text=users[currentUserId]["y_pacingState"]+" y_pacingState", bg=programparamsbg)
-    p1.place(x=180, y=346)
+    # display the last saved values of the user, if they exist
+    if ("p_pacingState" in users[currentUserId]):
+        Label(programparams, text=users[currentUserId]["p_pacingState"]+" y_pacingState", bg=programparamsbg).place(x=180, y=346)
+    
+    if ("p_pacingMode" in users[currentUserId]):
+        Label(programparams, text=users[currentUserId]["p_pacingMode"]+" y_pacingMode", bg=programparamsbg).place(x=182, y=378)
+    
+    if ("p_hysteresis" in users[currentUserId]):
+        Label(programparams, text=users[currentUserId]["p_hysteresis"], bg=programparamsbg).place(x=170, y=410)
+    
+    if ("p_hysteresisInterval" in users[currentUserId]):
+        Label(programparams, text=users[currentUserId]["p_hysteresisInterval"]+" mSec", bg=programparamsbg).place(x=210, y=442)
+    
+    if ("p_lowrateInterval" in users[currentUserId]):
+        Label(programparams, text=users[currentUserId]["p_lowrateInterval"]+" mSec", bg=programparamsbg).place(x=195, y=474)
+    
+    if ("p_vPaceAmp" in users[currentUserId]):
+        Label(programparams, text=users[currentUserId]["p_vPaceAmp"]+" mV", bg=programparamsbg).place(x=175, y=506)
+    
+    if ("p_vPaceWidth" in users[currentUserId]):
+        Label(programparams, text=users[currentUserId]["p_vPaceWidth"]+" mSec", bg=programparamsbg).place(x=170, y=538)
+    
+    if ("p_VRP" in users[currentUserId]):
+        Label(programparams, text=users[currentUserId]["p_VRP"]+" mSec", bg=programparamsbg).place(x=123, y=570)
 
 # ********************************************************************************************
 def check1(currentUserId, lbl1entry, programparams, bttn1, param1):
-    print(currentUserId)
     if(lbl1entry):
         lblval = Label(programparams, text=lbl1entry, bg=programparamsbg, width=20)
         lblval.place(x=198, y=40)
@@ -145,18 +165,17 @@ def check1(currentUserId, lbl1entry, programparams, bttn1, param1):
         file=open('user_data','rb')
         users=pickle.load(file)
         file.close()
-        print(users)
 
         # delete original storage of user data
         os.remove('user_data')
 
         # write new user data
-        users[currentUserId]['y_pacingState'] = lbl1entry
+        users[currentUserId]['p_pacingState'] = lbl1entry
         file = open('user_data', 'wb')
         pickle.dump(users,file)
         file.close()
 
-def check2(lbl2entry, programparams, bttn2, param2):
+def check2(currentUserId, lbl2entry, programparams, bttn2, param2):
     if(lbl2entry):
         lblval = Label(programparams, text=lbl2entry, bg=programparamsbg, width=20)
         lblval.place(x=198, y=70)
@@ -166,7 +185,21 @@ def check2(lbl2entry, programparams, bttn2, param2):
         bttnchange = Button(programparams, text="Change", width=8, bg=programparamsbg, command= lambda: param2())
         bttnchange.place(x=500, y=71)
 
-def check3(lbl3entry, programparams, bttn3, param3):
+        # load original storage of users data
+        file=open('user_data','rb')
+        users=pickle.load(file)
+        file.close()
+
+        # delete original storage of user data
+        os.remove('user_data')
+
+        # write new user data
+        users[currentUserId]['p_pacingMode'] = lbl2entry
+        file = open('user_data', 'wb')
+        pickle.dump(users,file)
+        file.close()
+
+def check3(currentUserId, lbl3entry, programparams, bttn3, param3):
     if(lbl3entry):
         if(lbl3entry == "true" or lbl3entry == "True" or lbl3entry == "false" or lbl3entry == "False"):
             lblval = Label(programparams, text=lbl3entry, bg=programparamsbg, width=20)
@@ -176,6 +209,20 @@ def check3(lbl3entry, programparams, bttn3, param3):
             p3.place(x=170, y=410)
             bttnchange = Button(programparams, text="Change", width=8, bg=programparamsbg, command= lambda: param3())
             bttnchange.place(x=500, y=101)
+            
+            # load original storage of users data
+            file=open('user_data','rb')
+            users=pickle.load(file)
+            file.close()
+
+            # delete original storage of user data
+            os.remove('user_data')
+
+            # write new user data
+            users[currentUserId]['p_hysteresis'] = lbl3entry
+            file = open('user_data', 'wb')
+            pickle.dump(users,file)
+            file.close()
         else:
             error=Tk()
             error.title("Error")
@@ -184,7 +231,7 @@ def check3(lbl3entry, programparams, bttn3, param3):
             messageLbl=Label(error,text="Error: the parameter you entered is not valid!\nThe value must be a boolean (True or False)", bg=newUserbg)
             messageLbl.place(x=50,y=25)
 
-def check4(lbl4entry, programparams, bttn4, param4):
+def check4(currentUserId, lbl4entry, programparams, bttn4, param4):
     if(lbl4entry):
         lbl4val = float(lbl4entry)
         if(lbl4val < 196):
@@ -209,8 +256,22 @@ def check4(lbl4entry, programparams, bttn4, param4):
             p4.place(x=210, y=442)
             bttnchange = Button(programparams, text="Change", width=8, bg=programparamsbg, command= lambda: param4())
             bttnchange.place(x=500, y=131)
+            
+            # load original storage of users data
+            file=open('user_data','rb')
+            users=pickle.load(file)
+            file.close()
 
-def check5(lbl5entry, programparams, bttn5, param5):
+            # delete original storage of user data
+            os.remove('user_data')
+
+            # write new user data
+            users[currentUserId]['p_hysteresisInterval'] = lbl4entry
+            file = open('user_data', 'wb')
+            pickle.dump(users,file)
+            file.close()
+
+def check5(currentUserId, lbl5entry, programparams, bttn5, param5):
     if(lbl5entry):
         lbl5val=float(lbl5entry)
         if(lbl5val < 335):
@@ -236,7 +297,21 @@ def check5(lbl5entry, programparams, bttn5, param5):
             bttnchange = Button(programparams, text="Change", width=8, bg=programparamsbg, command= lambda: param5())
             bttnchange.place(x=500, y=161)
 
-def check6(lbl6entry, programparams, bttn6, param6):
+            # load original storage of users data
+            file=open('user_data','rb')
+            users=pickle.load(file)
+            file.close()
+
+            # delete original storage of user data
+            os.remove('user_data')
+
+            # write new user data
+            users[currentUserId]['p_lowrateInterval'] = lbl5entry
+            file = open('user_data', 'wb')
+            pickle.dump(users,file)
+            file.close()
+
+def check6(currentUserId, lbl6entry, programparams, bttn6, param6):
     if(lbl6entry):
         lbl6val=float(lbl6entry)
         if(lbl6val < 440):
@@ -262,7 +337,21 @@ def check6(lbl6entry, programparams, bttn6, param6):
             bttnchange = Button(programparams, text="Change", width=8, bg=programparamsbg, command= lambda: param6())
             bttnchange.place(x=500, y=191)
 
-def check7(lbl7entry, programparams, bttn7, param7):
+            # load original storage of users data
+            file=open('user_data','rb')
+            users=pickle.load(file)
+            file.close()
+
+            # delete original storage of user data
+            os.remove('user_data')
+
+            # write new user data
+            users[currentUserId]['p_vPaceAmp'] = lbl6entry
+            file = open('user_data', 'wb')
+            pickle.dump(users,file)
+            file.close()
+
+def check7(currentUserId, lbl7entry, programparams, bttn7, param7):
     if(lbl7entry):
         lbl7val=float(lbl7entry)
         if(lbl7val < 0.1):
@@ -288,7 +377,21 @@ def check7(lbl7entry, programparams, bttn7, param7):
             bttnchange = Button(programparams, text="Change", width=8, bg=programparamsbg, command= lambda: param7())
             bttnchange.place(x=500, y=221)
 
-def check8(lbl8entry, programparams, bttn8, param8):
+            # load original storage of users data
+            file=open('user_data','rb')
+            users=pickle.load(file)
+            file.close()
+
+            # delete original storage of user data
+            os.remove('user_data')
+
+            # write new user data
+            users[currentUserId]['p_vPaceWidth'] = lbl7entry
+            file = open('user_data', 'wb')
+            pickle.dump(users,file)
+            file.close()
+
+def check8(currentUserId, lbl8entry, programparams, bttn8, param8):
     if(lbl8entry):
         lbl8val=float(lbl8entry)
         if(lbl8val < 142):
@@ -313,8 +416,20 @@ def check8(lbl8entry, programparams, bttn8, param8):
             p8.place(x=123, y=570)
             bttnchange = Button(programparams, text="Change", width=8, bg=programparamsbg, command= lambda: param8())
             bttnchange.place(x=500, y=251)
-        
 
+            # load original storage of users data
+            file=open('user_data','rb')
+            users=pickle.load(file)
+            file.close()
+
+            # delete original storage of user data
+            os.remove('user_data')
+
+            # write new user data
+            users[currentUserId]['p_VRP'] = lbl8entry
+            file = open('user_data', 'wb')
+            pickle.dump(users,file)
+            file.close()
     
 def logInCheck(window,username,password):
     success=False
@@ -326,13 +441,11 @@ def logInCheck(window,username,password):
         file=open('user_data','rb')
         users=pickle.load(file)
         file.close()
-        print(users)
         for userId, userData in users.items():
             if(userData['username']==username):
                 if(userData['password']==password): #login successful
                     success=True
                     currentUserId = userId
-                    print(currentUserId)
                     break   #exit loop once username and password are found
         message="Incorrect username or password." #will only get here if username and password not found
     if(success):
@@ -393,13 +506,11 @@ def onClickCreate(newUser,username,password):
 
     #creates file if doesn't exist
     if(os.path.exists('user_data')==False):
-        #print("creating file")
         file=open('user_data','w')
         file.close()
     
     #file exist, but empty 
     if(os.stat('user_data').st_size==0):
-        #print("users empty")
         users={}
         users[0]={}
         users[0]['username']=username
@@ -409,17 +520,13 @@ def onClickCreate(newUser,username,password):
         file=open('user_data','rb')
         users=pickle.load(file)
         file.close()
-        #print(users)
         i=len(users)
-        print(i)
     
         if(i>=10):
             message="Cannot create new user. Maximum number of users already created."
 
         elif(i<10):
             users[i]={}
-            #print(username)
-            #print(password)
             users[i]['username']=username
             users[i]['password']=password
             message="Successfully created new user."
