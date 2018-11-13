@@ -1,4 +1,3 @@
-import pickle
 from tkinter import *
 import os
 
