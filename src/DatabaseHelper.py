@@ -18,15 +18,16 @@ class DatabaseHelper(metaclass=Singleton):
 	def getTables(self):
 		return self._tinydb.tables()
 
-	#insert new row values into a table
+	#insert new row values into a table, returns id
 	def insert(self, table_name: str, row: dict):
-		self.createTable(table_name).insert(row)
+		return self.createTable(table_name).insert(row)
 
 	#get a row of values given table name, and field-value search
 	def get(self, table_name: str, field: str, value):
 		return self.createTable(table_name).get(where(field) == value)
 
 	#update a field value based on table name
-	def update(self, table_name: str, searchField: str, searchValue, updateValue):
+	def update(self, table_name: str, searchField: str, searchValue,
+			updateField: str, updateValue):
 		table = self.createTable(table_name)
-		table.update({searchField, updateValue}, where(searchField) == searchValue)
+		table.update({updateField: updateValue}, where(searchField) == searchValue)
