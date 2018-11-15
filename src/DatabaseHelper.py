@@ -1,34 +1,14 @@
-from tinydb import TinyDB, Query
-
-class Singleton(type):
-	'''
-	Singleton class borrowed from: 
-	https://sourcemaking.com/design_patterns/singleton/python/1
-    Define an Instance operation that lets clients access its unique
-    instance.
-    '''
-    def __init__(cls, name, bases, attrs, **kwargs):
-        super().__init__(name, bases, attrs)
-        cls._instance = None
-
-    def __call__(cls, *args, **kwargs):
-        if cls._instance is None:
-            cls._instance = super().__call__(*args, **kwargs)
-        return cls._instance
+from Singleton import Singleton
+from tinydb import TinyDB, where
 
 class DatabaseHelper(metaclass=Singleton):
 	def __init__(self, db_file_path: str):
 		self._tinydb = TinyDB(db_file_path)
 
-	'''
-	Creates a new table in database given table name.
-	Returns None if failed to create table.
-	'''
-	def createTable(self, name: str):
-		try:
-			return self._tinydb.table(name)
-		except Exception as e:
-			return None
+	#creates new table if it doesn't exist yet, or returns 
+	#existing or cached table
+	def createTable(self, table_name):
+		return self._tinydb.table(table_name)
 
 	#remove table from database
 	def removeTable(self, name: str):
@@ -39,9 +19,14 @@ class DatabaseHelper(metaclass=Singleton):
 		return self._tinydb.tables()
 
 	#insert new row values into a table
-	def insert(table_name: str, row: dict):
-		table = self._tinydb.table(table_name)
-		table.insert(row)
+	def insert(self, table_name: str, row: dict):
+		self.createTable(table_name).insert(row)
 
-	def get(self, table_name, ):
-		table = self._tinydb.table(table_name)
+	#get a row of values given table name, and field-value search
+	def get(self, table_name: str, field: str, value):
+		return self.createTable(table_name).get(where(field) == value)
+
+	#update a field value based on table name
+	def update(self, table_name: str, searchField: str, searchValue, updateValue):
+		table = self.createTable(table_name)
+		table.update({searchField, updateValue}, where(searchField) == searchValue)

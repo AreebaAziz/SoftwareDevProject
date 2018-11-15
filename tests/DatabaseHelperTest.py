@@ -1,48 +1,32 @@
 import sys
 sys.path.insert(0, '../src')
-
-import unittest
 from DatabaseHelper import DatabaseHelper
+from SimpleTest import SimpleTest
 
-class DatabaseHelperTest(unittest.TestCase):
+class DatabaseHelperTest():
 	def setUp(self):
 		self.db = DatabaseHelper("testDatabase.json")
+		self.db._tinydb.purge_tables()	#remove any pre-existing tables
+		self.table_name = "testTable"
+		self.table = self.db.createTable(self.table_name)
+		self.st = SimpleTest()
 
-	#assert if DatabaseHelper class is a singleton
-	def testDBSingleton(self):
-		db = DatabaseHelper()
-		self.assertTrue(db is self.db)
+	def testDatabaseHelper(self):
+		# assert a table was successfully created at setup
+		st.assertIs(self.db.getTables(), None)
 
-	#test table creation and deletion
-	def testTables(self):
-		#create table
-		table_name = "testTable"
-		table = self.db.createTable(table_name)
-		
-		#assert table was successfully created
-		self.assertTrue(table is not None)
-		self.assertTrue(table_name in self.db.getTables())
-
-		#delete table
-		self.db.removeTable(table_name)
-		self.assertFalse(table_name in self.db.getTables())
-
-	#test table insert function
-	def testInsert(self):
-		#create table
-		table_name = "testTable"
-		table = self.db.createTable(table_name)
-
-		#insert values
+		# assert insertion and getting value is successful
 		values = {
 			'name': 'areeba',
-			'age': 20,
+			'age': 21,
 			'country': 'CA'
 		}
-		self.db.insert(table_name, values)
+		self.db.insert(self.table_name, values)
+		valuesActual = self.db.get(self.table_name, 'name', 'areeba')
+		assert values == valuesActual
 
-		#search for values
-		
+	def runTests(self):
+		self.setUp()
+		self.testDatabaseHelper()
 
-if __name__ == "__main__":
-    unittest.main()
+DatabaseHelperTest().runTests()
