@@ -2,3 +2,5 @@ user_data
 .vscode/
 tkinter/__pycache__/
 __pycache__/
+tests/UserData.json
+src/UserData.json
