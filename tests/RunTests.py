@@ -1,4 +1,5 @@
-import os
+import os, sys
+sys.path.insert(0, '../src')
 
 class SimpleTestSuite:
 	def __init__(self):

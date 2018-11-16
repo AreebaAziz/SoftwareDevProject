@@ -2,8 +2,8 @@ from Singleton import Singleton
 from tinydb import TinyDB, where
 
 class DatabaseHelper(metaclass=Singleton):
-	def __init__(self, db_file_path: str):
-		self._tinydb = TinyDB(db_file_path)
+	def __init__(self):
+		self._tinydb = TinyDB("UserData.json")
 
 	#creates new table if it doesn't exist yet, or returns 
 	#existing or cached table
