@@ -1,12 +1,11 @@
 from tinydb import TinyDB, Query
-
+'''
+Singleton class borrowed from: 
+https://sourcemaking.com/design_patterns/singleton/python/1
+Define an Instance operation that lets clients access its unique
+instance.
+'''
 class Singleton(type):
-	'''
-	Singleton class borrowed from: 
-	https://sourcemaking.com/design_patterns/singleton/python/1
-    Define an Instance operation that lets clients access its unique
-    instance.
-    '''
     def __init__(cls, name, bases, attrs, **kwargs):
         super().__init__(name, bases, attrs)
         cls._instance = None
@@ -39,9 +38,10 @@ class DatabaseHelper(metaclass=Singleton):
 		return self._tinydb.tables()
 
 	#insert new row values into a table
-	def insert(table_name: str, row: dict):
+	def insert(self, table_name: str, row: dict):
 		table = self._tinydb.table(table_name)
 		table.insert(row)
 
-	def get(self, table_name, ):
-		table = self._tinydb.table(table_name)
+	def get(self, table_name):
+		pass
+		#table = self._tinydb.table(table_name)
