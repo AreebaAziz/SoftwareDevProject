@@ -9,13 +9,16 @@ class SessionHelper:
 		self.user = None
 
 	def signInUser(self, username: str, password: str):
+		'''
 		self.user = UserHelper.createNewUser(username, password) #should not be create user if signing in
 		self.gui.displayUserDashboard(self)
+		'''
+		pass
+
+	def createUser(self):
+		pass
 		 
 	def setUserPacingMode(self):
 		pass
-		# if (self.user is not None):
-		# 	return self.userHelper.setUserPacingMode(self.user, )
-		# else:
-		# 	return None
+		
 
