@@ -32,11 +32,15 @@ class UserHelper(metaclass=Singleton):
 			})
 			return User(username)
 		else:
-			return None	
+			return None
 
-	def getUser(self, username: str):
+	'''
+	Returns User object if login info is correct, 
+	otherwise returns None. 
+	'''
+	def getUser(self, username: str, password: str):
 		user_raw = self.db.get(self.USERS_TABLE, 'username', username)
-		if user_raw is None:
+		if user_raw is None or user_raw['password'] != password:
 			return None
 		else:
 			# serialize it into User object
