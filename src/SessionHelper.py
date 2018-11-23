@@ -26,6 +26,8 @@ class SessionHelper:
 			self.gui.DestroyWindow(action=self.gui.createLoginScreen(self))
 		else:
 			self.gui.CreatePopUp("Error!","Cannot create user. Username may already exist or 10 users already created.")
-
 		
-
+	def createUser(self, username: str, password: str):
+		self.user = self.userHelper.createNewUser(username, password)
+		 
+	

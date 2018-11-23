@@ -100,7 +100,5 @@ class GUIHelper:
 		lbl.place(x=30, y=25)
 
 
-
-	
-
-	
+	def displayUserDashboard(self, sessionHelper): 
+		self.CreateMenu(20, 20, ['a', 'are', 'de'])

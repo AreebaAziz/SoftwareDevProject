@@ -4,7 +4,6 @@ import os
 from PIL import ImageTk, Image
 
 class Parameters:
-
     def pacingModeList(self):
         pacingModes = [
         "AAT", 
@@ -125,10 +124,3 @@ class Parameters:
         if pacingMode == "VVIR":
             programmableParameters = [0, 1, 2, 7, 9, 11, 12, 16, 17, 21, 22, 23, 24]
             createInputBoxes(programmableParameters)
-
-
-
-
-
-
-
