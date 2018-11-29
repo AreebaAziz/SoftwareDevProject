@@ -27,5 +27,4 @@ class DeviceCommunicationTest:
 		self.setUp()
 		#self.test_connectToDevice()
 		self.test_sendAllDataToDevice()
-
 DeviceCommunicationTest().runTests()
