@@ -94,10 +94,10 @@ class GUIHelper:
 	def CreatePopUp(self,title,text):
 		window=Tk()
 		window.title(title)
-		window.geometry("400x100")
+		window.geometry("450x100")
 		window.configure(bg=self.color)
 		lbl=Label(window, text=text, bg=self.color)
-		lbl.place(x=50, y=25)
+		lbl.place(x=30, y=25)
 
 
 
