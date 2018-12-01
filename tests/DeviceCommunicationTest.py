@@ -13,18 +13,23 @@ class DeviceCommunicationTest:
 
 	def test_sendAllDataToDevice(self):
 		paramDict = {			
-			'pacingMode': 'VOO',
+			'pacingMode': 'AOO',
 			'hysteresis': True,
-			'hysteresisLevel': 250,		# ms
-			'lowrateInterval': 1000, 	# ms
-			'vPaceAmp': 6500, 			# mv
+			'hysteresisLevel': 500,		# ms
+			'lowrateInterval': 2000, 	# ms
+			'vPaceAmp': 7000, 			# mv
 			'vPaceWidth': 13, 			# 10 ms
 			'VRP': 200 					# ms
 		}
 		self.dc.sendAllDataToDevice(paramDict, True)
 
+	def test_requestEgramData(self):
+		res = self.dc.requestEGramData()
+		print(res)
+
 	def runTests(self):
 		self.setUp()
-		#self.test_connectToDevice()
+		self.test_connectToDevice()
 		self.test_sendAllDataToDevice()
+		#self.test_requestEgramData()
 DeviceCommunicationTest().runTests()
