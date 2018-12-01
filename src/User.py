@@ -45,6 +45,8 @@ class UserHelper(metaclass=Singleton):
 		else:
 			# serialize it into User object
 			user = User(user_raw['username'])
+			if 'pacingMode' in user_raw:
+				self.setPacingMode(user, user_raw['pacingMode'])
 			return user
 
 	'''
