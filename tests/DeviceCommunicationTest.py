@@ -27,9 +27,22 @@ class DeviceCommunicationTest:
 		res = self.dc.requestEGramData()
 		print(res)
 
+<<<<<<< HEAD
 	def runTests(self):
 		self.setUp()
 		self.test_connectToDevice()
 		self.test_sendAllDataToDevice()
+=======
+	def test_handshake(self):
+		self.dc.sendDataToDevice(b'\x01')
+		res = self.dc.receiveDataFromDevice(1)
+		print(res)
+
+	def runTests(self):
+		self.setUp()
+		self.test_connectToDevice()
+		self.test_handshake()
+		#self.test_sendAllDataToDevice()
+>>>>>>> Areeba
 		#self.test_requestEgramData()
 DeviceCommunicationTest().runTests()
