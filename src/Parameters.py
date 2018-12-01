@@ -2,11 +2,12 @@ import pickle
 from tkinter import *
 import os
 from PIL import ImageTk, Image
+# from GUIHelper import GUIHelper
 
 class Parameters:
+
     def pacingModeList(self):
-        pacingModes = [
-        "AAT", 
+        pacingModes = ["AAT", 
         "VVT", 
         "AOO",
         "AAI",
@@ -24,12 +25,9 @@ class Parameters:
         "DOOR",
         "DDIR",
         "DDDR"]
-        # call on function createMenu to create the option list
-        #selectedMode = gui.CreateMenu(20, 20, pacingModes)
-        #gui.CreateButton(40, 30, 'OK', self.checkPacingMode(selectedMode))
+        return pacingModes
 
-
-    def checkPacingMode(self,pacingMode):
+    def displayParams(self, gui, pacingMode):
         possibleParams = ["Lower Rate Limit",
         "Upper Rate Limit",
         "Maximum Sensor Rate",
@@ -39,6 +37,7 @@ class Parameters:
         "Atrial Amplitude",
         "Ventricular Amplitude",
         "Atrial Pulse Width",
+        "Ventricular Pulse Width",
         "Atrial Sensitivity",
         "Ventricular Sensitivity",
         "VRP",
@@ -54,73 +53,171 @@ class Parameters:
         "Reaction Time",
         "Response Factor",
         "Recovery Time"]
-
-        yvalue = 30
-        for i in possibleParams:
-            #gui.CreateParameter(i, yvalue)
-            yvalue += 30
-
-        def createInputBoxes(programmable):
-            for j in programmable:
-                if j in possibleParams:
-                    yvalue = (j+1)*30
-                   # gui.CreateEntryParam(yvalue)
-                    #gui.CreateButton(85, yvalue, 20, 'Check', checkParams)
-                    ##where x=85, 20=width
-                    # getParam is a function that tells you which param needs to be checked
-
-        if pacingMode == "AAT":
-            programmableParameters = [0, 1, 6, 8, 10, 13, 14]
-            createInputBoxes(programmableParameters)
-
-        if pacingMode == "VVT":
-            programmableParameters = [0, 1, 7, 9, 11, 12]
-            createInputBoxes(programmableParameters)
-
-        if pacingMode == "AOO":
-            programmableParameters = [0, 1, 6, 8]
-            createInputBoxes(programmableParameters)
-
-        if pacingMode == "AAI":
-            programmableParameters = [0, 1, 6, 8, 10, 13, 14, 16, 17]
-            createInputBoxes(programmableParameters)
-
-        if pacingMode == "VOO":
-            programmableParameters = [0, 1, 7, 9]
-            createInputBoxes(programmableParameters)
-
-        if pacingMode == "VVI":
-            programmableParameters = [0, 1, 7, 9, 11, 12, 16, 17]
-            createInputBoxes(programmableParameters)
-
-        if pacingMode == "VDD":
-            programmableParameters = [0, 1, 3, 4, 7, 9, 11, 12, 15, 17, 18, 19, 20]
-            createInputBoxes(programmableParameters)
-
-        if pacingMode == "DOO":
-            programmableParameters = [0, 1, 3, 6, 7, 8, 9]
-            createInputBoxes(programmableParameters)
-
-        if pacingMode == "DDI":
-            programmableParameters = [0, 1, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-            createInputBoxes(programmableParameters)
-
-        if pacingMode == "DDD":
-            programmableParameters = [0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-            createInputBoxes(programmableParameters)
-
-        if pacingMode == "AAOR":
-            programmableParameters = [0, 1, 2, 6, 8, 21, 22, 23, 24]
-            createInputBoxes(programmableParameters)
-
-        if pacingMode == "AAIR":
-            programmableParameters = [0, 1, 2, 6, 8, 10, 13, 16, 17, 21, 22, 23, 24]
-            createInputBoxes(programmableParameters)
-
-        if pacingMode == "VOOR":
-            programmableParameters = [0, 1, 2, 7, 9, 21, 22, 23, 24]
-            createInputBoxes(programmableParameters)
+        gui.showParam(possibleParams)
+        print(pacingMode.get())
+        self.checkPacingMode(gui, possibleParams, pacingMode.get())
         
-        if pacingMode == "VVIR":
-            programmableParameters = [0, 1, 2, 7, 9, 11, 12, 16, 17, 21, 22, 23, 24]
-            createInputBoxes(programmableParameters)
+
+    def checkPacingMode(self, gui, possible, pacingMode):
+        print(pacingMode)
+        if pacingMode == "AAT":
+            programmableParameters = ["Lower Rate Limit", "Upper Rate Limit", "Atrial Amplitude", "Ventricular Amplitude", "Atrial Sensitivity", "ARP", "PVARP"]
+            gui.showEntryParam(programmableParameters, possible)
+
+        elif pacingMode == "VVT":
+            programmableParameters = ["Lower Rate Limit", "Upper Rate Limit", "Ventricular Amplitude", "Ventricular Pulse Width", "Ventricular Sensitivity", "VRP"]
+            gui.showEntryParam(programmableParameters, possible)
+
+        elif pacingMode == "AOO":
+            programmableParameters = ["Lower Rate Limit", "Upper Rate Limit", "Atrial Amplitude", "Atrial Pulse Width"]
+            gui.showEntryParam(programmableParameters, possible)
+
+        elif pacingMode == "AAI":
+            programmableParameters = ["Lower Rate Limit", "Upper Rate Limit", "Atrial Amplitude", "Atrial Pulse Width", "Atrial Sensitivity", "ARP", "PVARP", "Hysteresis", "Rate Smoothing"]
+            gui.showEntryParam(programmableParameters, possible)
+
+        elif pacingMode == "VOO":
+            programmableParameters = ["Lower Rate Limit", "Upper Rate Limit", "Ventricular Amplitude", "Ventricular Pulse Width"]
+            gui.showEntryParam(programmableParameters, possible)
+
+        elif pacingMode == "VVI":
+            programmableParameters = ["Lower Rate Limit", "Upper Rate Limit", "Ventricular Amplitude", "Ventricular Pulse Width", "Ventricular Sensitivity", "VRP", "Hysteresis", "Rate Smoothing"]
+            gui.showEntryParam(programmableParameters, possible)
+
+        elif pacingMode == "VDD":
+            programmableParameters = ["Lower Rate Limit", "Upper Rate Limit", "Fixed AV Delay", "Dynamic AV Delay", "Ventricular Amplitude", "Ventricular Pulse Width","Ventricular Sensitivity", "VRP", "PVARP Extension", "Rate Smoothing", "ATR Duration", "ATR Fallback Mode", "ATR Fallback Time"]
+            gui.showEntryParam(programmableParameters, possible)
+
+        elif pacingMode == "DOO":
+            programmableParameters = ["Lower Rate Limit","Upper Rate Limit","Fixed AV Delay","Atrial Amplitude","Ventricular Amplitude","Atrial Pulse Width","Ventricular Pulse Width"]
+            gui.showEntryParam(programmableParameters, possible)
+
+        elif pacingMode == "DDI":
+            programmableParameters = ["Lower Rate Limit","Upper Rate Limit","Fixed AV Delay","Atrial Amplitude","Ventricular Amplitude","Atrial Pulse Width","Ventricular Pulse Width","Atrial Sensitivity","Ventricular Sensitivity","VRP","ARP","PVARP"]
+            gui.showEntryParam(programmableParameters, possible)
+
+        elif pacingMode == "DDD":
+            programmableParameters = ["Lower Rate Limit", "Upper Rate Limit", "Fixed AV Delay", "Dynamic AV Delay", "Sensed AV Delay Offset", "Atrial Amplitude", "Ventricular Amplitude", "Atrial Pulse Width", "Ventricular Pulse Width", "Atrial Sensitivity", "Ventricular Sensitivity", "VRP", "ARP", "PVARP", "PVARP Extension", "Hysteresis", "Rate Smoothing", "ATR Duration", "ATR Fallback Mode", "ATR Fallback Time"]
+            gui.showEntryParam(programmableParameters, possible)
+
+        elif pacingMode == "AAOR":
+            programmableParameters = ["Lower Rate Limit", "Upper Rate Limit", "Maximum Sensor Rate", "Atrial Amplitude", "Atrial Pulse Width", "Activity Threshold", "Reaction Time", "Response Factor", "Recovery Time"]
+            gui.showEntryParam(programmableParameters, possible)
+
+        elif pacingMode == "AAIR":
+            programmableParameters = ["Lower Rate Limit", "Upper Rate Limit", "Maximum Sensor Rate", "Atrial Amplitude", "Atrial Pulse Width", "Atrial Sensitivity", "ARP", "Hysteresis", "Rate Smoothing", "Activity Threshold", "Reaction Time", "Response Factor", "Recovery Time"]
+            gui.showEntryParam(programmableParameters, possible)
+
+        elif pacingMode == "VOOR":
+            programmableParameters = ["Lower Rate Limit","Upper Rate Limit","Maximum Sensor Rate","Ventricular Amplitude","Ventricular Pulse Width","Activity Threshold","Reaction Time","Response Factor","Recovery Time"]
+            gui.showEntryParam(programmableParameters, possible)
+        
+        elif pacingMode == "VVIR":
+            programmableParameters = ["Lower Rate Limit", "Upper Rate Limit", "Maximum Sensor Rate", "Ventricular Amplitude", "Ventricular Pulse Width", "Ventricular Sensitivity", "VRP", "Hysteresis", "Rate Smoothing", "Activity Threshold", "Reaction Time", "Response Factor", "Recovery Time"]
+            gui.showEntryParam(programmableParameters, possible)
+        else:
+            print ('NOPE')
+
+    def checkParamValid(self, gui, entryid, enteredVal):
+        if entryid == "Lower Rate Limit":
+            if (enteredVal):
+                lowerRateLimit = float(enteredVal)
+                if (lowerRateLimit < 57.0 or lowerRateLimit > 73.0):
+                    error = str(lowerRateLimit)
+                    error = "error"
+                    gui.acceptOrRejectParam(error)
+                else:
+                    gui.acceptOrRejectParam(lowerRateLimit)
+
+        elif entryid == "Upper Rate Limit":
+            if (enteredVal):
+                upperRateLim = float(enteredVal)
+                if (upperRateLim < 112 or upperRateLim > 128):
+                    error = str(upperRateLim)
+                    error = "error"
+                    gui.acceptOrRejectParam(error)
+                else:
+                    gui.acceptOrRejectParam(upperRateLim)
+
+        elif entryid == "Maximum Sensor Rate":
+            if (enteredVal):
+                maxSensorRate = float(enteredVal)
+                if (maxSensorRate < 116 or maxSensorRate > 124):
+                    error = str(maxSensorRate)
+                    error = "error"
+                    gui.acceptOrRejectParam(error)
+                else:
+                    gui.acceptOrRejectParam(maxSensorRate)
+
+        elif entryid == "Fixed AV Delay":
+            if (enteredVal):
+                fixedAVDelay = float(enteredVal)
+                if (fixedAVDelay < 142 or fixedAVDelay > 158):
+                    error = str(fixedAVDelay)
+                    error = "error"
+                    gui.acceptOrRejectParam(error)
+                else:
+                    gui.acceptOrRejectParam(fixedAVDelay)
+
+        elif entryid == "Dynamic AV Delay":
+            if (enteredVal):
+                if (enteredVal == "ON" or enteredVal == "on" or enteredVal == "On"):
+                    # 1 means on 
+                    gui.acceptOrRejectParam(1)
+                elif(enteredVal == "OFF" or enteredVal =="Off" or enteredVal == "off"):
+                    # 0 means off
+                    gui.acceptOrRejectParam(0)
+                else:
+                    error = "error"
+                    gui.acceptOrRejectParam(error)
+
+        elif entryid == "Sensed AV Delay Offset":
+            if (enteredVal):
+                sensedAVDelayOffset = float(enteredVal)
+                if (sensedAVDelayOffset < 142 or sensedAVDelayOffset > 158):
+                    error = str(sensedAVDelayOffset)
+                    error = "error"
+                    gui.acceptOrRejectParam(error)
+                else:
+                    gui.acceptOrRejectParam(sensedAVDelayOffset)
+
+        elif entryid == "Atrial Amplitude":
+            pass
+        elif entryid == "Ventricular Amplitude":
+            pass
+        elif entryid == "Atrial Pulse Width":
+            pass
+        elif entryid == "Ventricular Pulse Width":
+            pass
+        elif entryid == "Atrial Sensitivity":
+            pass
+        elif entryid == "Ventricular Sensitivity":
+            pass
+        elif entryid == "VRP":
+            pass
+        elif entryid == "ARP":
+            pass
+        elif entryid == "PVARP":
+            pass
+        elif entryid == "PVARP Extension":
+            pass
+        elif entryid == "Hysteresis":
+            pass
+        elif entryid == "Rate Smoothing":
+            pass
+        elif entryid == "ATR Duration":
+            pass
+        elif entryid == "ATR Fallback Mode":
+            pass
+        elif entryid == "ATR Fallback Time":
+            pass
+        elif entryid == "Activity Threshold":
+            pass
+        elif entryid == "Reaction Time":
+            pass
+        elif entryid == "Response Factor":
+            pass
+        elif entryid == "Recovery Time":
+            pass
+        else:
+            print ('NOPE')

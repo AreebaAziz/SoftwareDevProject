@@ -112,8 +112,11 @@ class DeviceCommunication:
 	def requestEGramData(self):
 		serialData = b'\x16\x01'
 		self.sendDataToDevice(serialData)
+		return self.receiveDataFromDevice(1)
+
+	def receiveDataFromDevice(self, numOfBytes: int):
 		try:
-			return self.ser.read(size=1)	# read one byte
+			return self.ser.read(size=numOfBytes, timeout=10)	# read one byte
 		except serial.SerialException:
 			return None
 
