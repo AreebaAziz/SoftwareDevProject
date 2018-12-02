@@ -4,9 +4,11 @@
 	- receive egram data and display it (using a separate graph class)
 '''
 import serial
+from GraphEGram import GraphEGram
+
 class DeviceCommunication:
 	def __init__(self):
-		self.ser = serial.Serial()
+		self.ser = serial.Serial(timeout=10)
 
 	def connectToDevice(self): 
 	    self.ser.port = 'COM5'
@@ -92,36 +94,34 @@ class DeviceCommunication:
 	'''
 	def sendAllDataToDevice(self, paramData: dict, verbose: bool):
 		# assume data is transmitted high-byte first
-		serialData = b'\x11\x00'		# sync - x11 code to indicate start of package transmission
+		serialData = b'\x01\x00'		# sync - x01 code to indicate start of package transmission
 									# header - 0 to signify we're transmitting data
 
 		serialData += self.convertDataIntoBytes(paramData)
 
 		if (verbose):
 			print("Successfully converted all data into bytes.")
-			print("Serial data is: ")
-			print(serialData)
 			print("Attempting to send data to device...")
 
-		return self.sendDataToDevice(serialData)
+		# if (self.sendDataToDevice(serialData)):
+		# 	serialData = b'\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+		# 	self.sendDataToDevice(serialData)
+		# 	return self.receiveDataFromDevice(12)
 
 	'''
 		Sends a request to the hardware to send over one byte of egram data. 
 		returns the byte read, or None if failed
 	'''
 	def requestEGramData(self):
-		serialData = b'\x16\x01'
+		serialData = b'\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 		self.sendDataToDevice(serialData)
-<<<<<<< HEAD
-		try:
-			return self.ser.read(size=1)	# read one byte
-=======
-		return self.receiveDataFromDevice(1)
+		data = self.receiveDataFromDevice(2)
+		print("v: ", str(data[0]), ", a: ", str(data[1]))
+		return {'v': data[0], 'a': data[1]}
 
 	def receiveDataFromDevice(self, numOfBytes: int):
 		try:
-			return self.ser.read(size=numOfBytes, timeout=10)	# read one byte
->>>>>>> Areeba
+			return self.ser.read(size=numOfBytes)	# read one byte
 		except serial.SerialException:
 			return None
 
@@ -132,11 +132,13 @@ class DeviceCommunication:
 			res = 0
 
 		if (res == 0):	# no data sent
-			print("Failed to send data to device.")
+			print("Failed to send data to device:")
+			print(serialData)
 			return False
 		else:
-			print("Successfully sent data to device.")
+			print("Successfully sent data to device:")
+			print(serialData)
 			return True
 
-	def displayEGramData(self):
-		pass
+	def plotEgramData(self):
+		GraphEGram().plotEgramData(self)

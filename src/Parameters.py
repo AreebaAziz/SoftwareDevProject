@@ -111,11 +111,9 @@ class Parameters:
             programmableParameters = ["Lower Rate Limit","Upper Rate Limit","Maximum Sensor Rate","Ventricular Amplitude","Ventricular Pulse Width","Activity Threshold","Reaction Time","Response Factor","Recovery Time"]
             gui.showEntryParam(programmableParameters, possible)
         
-<<<<<<< HEAD
         if pacingMode == "VVIR":
             programmableParameters = [0, 1, 2, 7, 9, 11, 12, 16, 17, 21, 22, 23, 24]
             createInputBoxes(programmableParameters)
-=======
         elif pacingMode == "VVIR":
             programmableParameters = ["Lower Rate Limit", "Upper Rate Limit", "Maximum Sensor Rate", "Ventricular Amplitude", "Ventricular Pulse Width", "Ventricular Sensitivity", "VRP", "Hysteresis", "Rate Smoothing", "Activity Threshold", "Reaction Time", "Response Factor", "Recovery Time"]
             gui.showEntryParam(programmableParameters, possible)
@@ -225,4 +223,3 @@ class Parameters:
             pass
         else:
             print ('NOPE')
->>>>>>> Areeba

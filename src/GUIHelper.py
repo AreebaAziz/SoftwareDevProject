@@ -123,12 +123,4 @@ class GUIHelper:
 		window.geometry("450x100")
 		window.configure(bg=self.color)
 		lbl=Label(window, text=text, bg=self.color)
-<<<<<<< HEAD
 		lbl.place(x=30, y=25)
-
-
-	def displayUserDashboard(self, sessionHelper): 
-		self.CreateMenu(20, 20, ['a', 'are', 'de'])
-=======
-		lbl.place(x=30, y=25)
->>>>>>> Areeba
