@@ -85,29 +85,30 @@ class GUIHelper:
 		entry=Entry(self.window,width=width, bd = 0, textvariable = entryID)
 		entry.place(x=x,y=y)
 		self.CreateButton(400, y, 'OK', lambda: parameter.checkParamValid(self, entryID, entry.get()))
+		return entry
 
 	def acceptOrRejectParam(self, paramvalue):
 		if paramvalue == "error":
 			self.CreatePopUp('Error', 'The value you entered is invalid!')
-		else:
-			# THE PRINT STATEMENT IS A PLACE HOLDER BECAUSE HERE IS WHERE THE FUNCTION CALL FOR SERIAL COMMUNICATION GOES
-			# FOR EXAMPLE:
-			# self.serialCommunicate(paramvalue)
-			print (paramvalue)
 
 	def showEntryParam(self, programmable, possible):
+		paramObjects = {}
 		for i in programmable:
 			if i in possible:
 				yval = ((possible.index(i)+1)*35)+25
-				self.createEntryParam(200, yval, 20, i)
+				entry = self.createEntryParam(200, yval, 20, i)
+				paramObjects[i] = entry
+		return paramObjects
 	
 	def displayUserDashboard(self,sessionHelper):
 		parameter = Parameters()
 		self.CreateText(20, 20, 'Please Select a Pacing Mode: ')
 		pacingMode_optionName = self.CreateMenu(220, 20, parameter.pacingModeList())
 		self.CreateButton(300, 20, 'OK', lambda: parameter.displayParams(self, pacingMode_optionName))
-
-		# self.CreateButton(50,50,"Logout",lambda:sessionHelper.launch())
+		self.CreateButton(500,50,"Logout",lambda:sessionHelper.launch())
+		self.CreateButton(500, 100, "Connect to Device", lambda:sessionHelper.connectToDevice())
+		self.CreateButton(500, 150, "Send Data to Device", lambda:sessionHelper.sendAllDataToDevice(parameter))
+		self.CreateButton(500, 200, "View EGram Plot", lambda:sessionHelper.plotEgramData())
 
 	def CreateMenu(self, x, y, options):
 		optionName=StringVar(self.window)

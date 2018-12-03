@@ -9,11 +9,17 @@ from GraphEGram import GraphEGram
 class DeviceCommunication:
 	def __init__(self):
 		self.ser = serial.Serial(timeout=10)
+		self.connected = False
 
 	def connectToDevice(self): 
 	    self.ser.port = 'COM5'
 	    self.ser.baudrate = 115200
-	    self.ser.open()
+	    try:
+	    	self.ser.open()
+	    	self.connected = True
+	    	return True
+	    except:
+	    	return False
 
 	def convertDataIntoBytes(self, paramData: dict):
 		serialData = b''
@@ -33,7 +39,7 @@ class DeviceCommunication:
 		serialData += temp_byte
 
 		# hysteresis
-		temp_byte = b'\x00'		# @TODO: default hysteresis ??
+		temp_byte = b'\x00'	
 		if ('hysteresis' in paramData and paramData['hysteresis']):
 				temp_byte = b'\x01'
 
@@ -41,48 +47,48 @@ class DeviceCommunication:
 
 		# byte indices 4:9
 		# 4:5 - hysteresis level in 2 bytes
-		temp_bytes = '\x00'
+		temp_bytes = b'\x00\x00'
 		if ('hysteresisLevel' in paramData):
 			if (paramData['hysteresisLevel'] < 65536):
 				temp_bytes = paramData['hysteresisLevel'].to_bytes(2, byteorder='big')
 			else:
-				temp_bytes = '\x00'
+				temp_bytes = b'\x00'
 		serialData += temp_bytes
 
 		# 6:7 - lowrate interval in 2 bytes
-		temp_bytes = '\x00'
-		if ('lowrateInterval' in paramData):
-			if (paramData['lowrateInterval'] < 65536):
-				temp_bytes = paramData['lowrateInterval'].to_bytes(2, byteorder='big')
+		temp_bytes = b'\x00\x00'
+		if ('Low Rate Interval' in paramData):
+			if (paramData['Low Rate Interval'] < 65536):
+				temp_bytes = paramData['Low Rate Interval'].to_bytes(2, byteorder='big')
 			else:
-				temp_bytes = '\x00'
+				temp_bytes = b'\x00'
 		serialData += temp_bytes
 
-		# 8:9 - vPaceAmp in 2 bytes
-		temp_bytes = '\x00'
-		if ('vPaceAmp' in paramData):
-			if (paramData['vPaceAmp'] < 65536):
-				temp_bytes = paramData['vPaceAmp'].to_bytes(2, byteorder='big')
+		# 8:9 - Ventricular Amplitude (mV) in 2 bytes
+		temp_bytes = b'\x00\x00'
+		if ('Ventricular Amplitude (mV)' in paramData):
+			if (paramData['Ventricular Amplitude (mV)'] < 65536):
+				temp_bytes = paramData['Ventricular Amplitude (mV)'].to_bytes(2, byteorder='big')
 			else:
-				temp_bytes = '\x00'
+				temp_bytes = b'\x00'
 		serialData += temp_bytes
 
-		# 10 - vPaceWidth in 1 byte
-		temp_bytes = '\x00'
-		if ('vPaceWidth' in paramData):
-			if (paramData['vPaceWidth'] < 256):
-				temp_bytes = paramData['vPaceWidth'].to_bytes(2, byteorder='big')
+		# 10 - Ventricular Pace Width (10 ms) in 1 byte
+		temp_bytes = b'\x00'
+		if ('Ventricular Pace Width (10 ms)' in paramData):
+			if (paramData['Ventricular Pace Width (10 ms)'] < 256):
+				temp_bytes = paramData['Ventricular Pace Width (10 ms)'].to_bytes(2, byteorder='big')
 			else:
-				temp_bytes = '\x00'
+				temp_bytes = b'\x00'
 		serialData += temp_bytes
 
 		# 11:12 - VRP in 2 bytes
-		temp_bytes = '\x00'
-		if ('VRP' in paramData):
-			if (paramData['VRP'] < 65536):
-				temp_bytes = paramData['VRP'].to_bytes(2, byteorder='big')
+		temp_bytes = b'\x00\x00'
+		if ('VRP (ms)' in paramData):
+			if (paramData['VRP (ms)'] < 65536):
+				temp_bytes = paramData['VRP (ms)'].to_bytes(2, byteorder='big')
 			else:
-				temp_bytes = '\x00'
+				temp_bytes = b'\x00'
 		serialData += temp_bytes
 
 		return serialData
@@ -103,8 +109,10 @@ class DeviceCommunication:
 			print("Successfully converted all data into bytes.")
 			print("Attempting to send data to device...")
 
-		# if (self.sendDataToDevice(serialData)):
-		# 	serialData = b'\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+		return self.sendDataToDevice(serialData)
+
+		#if (self.sendDataToDevice(serialData)):
+		#	serialData = b'\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 		# 	self.sendDataToDevice(serialData)
 		# 	return self.receiveDataFromDevice(12)
 
@@ -116,8 +124,11 @@ class DeviceCommunication:
 		serialData = b'\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 		self.sendDataToDevice(serialData)
 		data = self.receiveDataFromDevice(2)
-		print("v: ", str(data[0]), ", a: ", str(data[1]))
-		return {'v': data[0], 'a': data[1]}
+		try:
+			print("v: ", str(data[0]), ", a: ", str(data[1]))
+			return {'v': data[0], 'a': data[1]}
+		except:
+			return None
 
 	def receiveDataFromDevice(self, numOfBytes: int):
 		try:
@@ -141,4 +152,4 @@ class DeviceCommunication:
 			return True
 
 	def plotEgramData(self):
-		GraphEGram().plotEgramData(self)
+		return GraphEGram().plotEgramData(self)

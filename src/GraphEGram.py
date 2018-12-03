@@ -11,6 +11,8 @@ class GraphEGram:
 		maxX = 200
 		x = [minX] 
 		data = deviceCommunication.requestEGramData()
+		if (data is None):
+			return False
 		y_vent = [self.getVoltage(data['v'])]
 		y_atr = [self.getVoltage(data['a'])]
     
@@ -27,6 +29,8 @@ class GraphEGram:
 
 		for i in range(minX, 101):
 		    data = deviceCommunication.requestEGramData()
+		    if (data is None):
+		    	return False
 		    y_vent.append(self.getVoltage(data['v']))
 		    y_atr.append(self.getVoltage(data['a']))
 		    x.append(i / 5.0)
@@ -38,6 +42,8 @@ class GraphEGram:
 
 		def update(i):
 			data = deviceCommunication.requestEGramData()
+			if (data is None):
+				return False
 			y_vent.append(self.getVoltage(data['v']))
 			y_atr.append(self.getVoltage(data['a']))
 			x.append((i + 100) / 5.0)
@@ -50,4 +56,5 @@ class GraphEGram:
 
 		a = anim.FuncAnimation(fig, update, frames=maxX, repeat=True)
 		plt.show(block=True)
+		return True
 		
