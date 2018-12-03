@@ -131,7 +131,7 @@ class Parameters:
                     lowerRateLimit = float(enteredVal)
                 except:
                     gui.acceptOrRejectParam("error")
-                if (lowerRateLimit < 57.0 or lowerRateLimit > 73.0):
+                if (lowerRateLimit < 343 or lowerRateLimit > 2000):
                     error = "error"
                     gui.acceptOrRejectParam(error)
                 else:
